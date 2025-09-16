@@ -1,0 +1,187 @@
+@model IEnumerable<PF_LAB3_BSIT32A1_Terrance_Soriano.Models.Card>
+
+@{
+    ViewData["Title"] = "Greed Island Cards";
+}
+
+<!-- Modern Hero Section -->
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-3 fw-bold mb-3">
+            <i class="fas fa-layer-group me-3"></i>Card Collection
+        </h1>
+        <p class="lead fs-4">Discover and manage your Hunter x Hunter cards</p>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Action Buttons Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <h2 class="fw-bold mb-0">Your Card Collection</h2>
+                <div class="d-flex gap-2">
+                    <a asp-action="Create" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus me-2"></i>Create New Card
+                    </a>
+                    <button class="btn btn-outline-primary btn-lg" onclick="toggleView()" id="viewToggle">
+                        <i class="fas fa-th me-2"></i>Grid View
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Card Grid Display -->
+    <div class="card-grid" id="cardGrid">
+        @foreach (var item in Model)
+        {
+            <div class="fade-in">
+                <div class="card h-100">
+                    <!-- Character Image -->
+                    <div class="position-relative">
+                        @if (!string.IsNullOrEmpty(item.CharacterImageUrl))
+                        {
+                            <img src="@Html.DisplayFor(modelItem => item.CharacterImageUrl)" 
+                                 class="card-img-top" 
+                                 alt="@item.CharacterName" 
+                                 style="height: 220px; object-fit: cover; border-radius: 12px 12px 0 0;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top d-flex align-items-center justify-content-center" 
+                                 style="height: 220px; background: var(--tertiary-bg); border-radius: 12px 12px 0 0;">
+                                <i class="fas fa-user fa-3x" style="color: var(--text-secondary);"></i>
+                            </div>
+                        }
+                        
+                        <!-- Rarity Badge -->
+                        <div class="position-absolute top-0 end-0 m-2">
+                            <span class="badge bg-@(GetRarityBadgeClass(item.Rarity)) px-3 py-2 fs-6 fw-bold">
+                                @Html.DisplayFor(modelItem => item.Rarity)
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <!-- Card Name and Character -->
+                        <h5 class="card-title fw-bold mb-2">@Html.DisplayFor(modelItem => item.Name)</h5>
+                        <p class="card-text mb-3" style="color: var(--text-secondary);">
+                            <i class="fas fa-user me-1"></i>@Html.DisplayFor(modelItem => item.CharacterName)
+                        </p>
+                        
+                        <!-- Power Level with Visual Indicator -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small class="fw-medium">Power Level</small>
+                                <span class="fw-bold">@Html.DisplayFor(modelItem => item.PowerLevel)/10</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar" 
+                                     style="width: @(item.PowerLevel * 10)%; background: var(--gradient-accent);">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Card Type and Description -->
+                        <div class="small mb-2">
+                            <i class="fas fa-tag me-1" style="color: var(--accent-color);"></i>
+                            @Html.DisplayFor(modelItem => item.CardType)
+                        </div>
+                        
+                        @if (!string.IsNullOrEmpty(item.Description))
+                        {
+                            <p class="small" style="color: var(--text-secondary);">
+                                @(item.Description.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)
+                            </p>
+                        }
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                        <div class="d-grid gap-2">
+                            <div class="btn-group" role="group">
+                                <a asp-action="Details" asp-route-id="@item.Id" 
+                                   class="btn btn-outline-primary btn-sm flex-fill">
+                                    <i class="fas fa-eye me-1"></i>Details
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" 
+                                   class="btn btn-outline-warning btn-sm flex-fill">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" 
+                                   class="btn btn-outline-danger btn-sm flex-fill">
+                                    <i class="fas fa-trash me-1"></i>Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Modern Empty State -->
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5 fade-in">
+            <div class="card mx-auto" style="max-width: 600px;">
+                <div class="card-body py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-cards-blank fa-5x" style="color: var(--text-secondary);"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">No Cards Found</h3>
+                    <p class="fs-5 mb-4" style="color: var(--text-secondary);">
+                        Start building your legendary Greed Island collection!
+                    </p>
+                    <a asp-action="Create" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus me-2"></i>Create Your First Card
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@functions {
+    // Enhanced Helper Function for Rarity Colors
+    public string GetRarityBadgeClass(PF_LAB3_BSIT32A1_Terrance_Soriano.Models.CardRarity rarity)
+    {
+        return rarity switch
+        {
+            PF_LAB3_BSIT32A1_Terrance_Soriano.Models.CardRarity.Common => "secondary",
+            PF_LAB3_BSIT32A1_Terrance_Soriano.Models.CardRarity.Uncommon => "primary",
+            PF_LAB3_BSIT32A1_Terrance_Soriano.Models.CardRarity.Rare => "info",
+            PF_LAB3_BSIT32A1_Terrance_Soriano.Models.CardRarity.SuperRare => "warning",
+            PF_LAB3_BSIT32A1_Terrance_Soriano.Models.CardRarity.UltraRare => "danger",
+            PF_LAB3_BSIT32A1_Terrance_Soriano.Models.CardRarity.Legendary => "dark",
+            _ => "light"
+        };
+    }
+}
+
+<script>
+function toggleView() {
+    const grid = document.getElementById('cardGrid');
+    const button = document.getElementById('viewToggle');
+    const icon = button.querySelector('i');
+    
+    if (grid.classList.contains('card-grid')) {
+        grid.classList.remove('card-grid');
+        grid.classList.add('row');
+        grid.querySelectorAll('div:first-child').forEach(div => {
+            div.classList.add('col-12', 'mb-3');
+        });
+        icon.className = 'fas fa-th me-2';
+        button.innerHTML = '<i class="fas fa-th me-2"></i>Grid View';
+    } else {
+        grid.classList.remove('row');
+        grid.classList.add('card-grid');
+        grid.querySelectorAll('div:first-child').forEach(div => {
+            div.classList.remove('col-12', 'mb-3');
+        });
+        icon.className = 'fas fa-list me-2';
+        button.innerHTML = '<i class="fas fa-list me-2"></i>List View';
+    }
+}
+</script>

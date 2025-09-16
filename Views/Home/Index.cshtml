@@ -1,0 +1,138 @@
+@{
+    ViewData["Title"] = "Cyber Terminal";
+}
+
+<!-- Futuristic Hero Section -->
+<div class="hero-section slide-up">
+    <div class="container text-center">
+        <h1 class="display-1 fw-bold mb-4">
+            <i class="fas fa-microchip me-3" style="animation: neonPulse 2s infinite;"></i>
+            WELCOME TO CYBER GREED ISLAND
+        </h1>
+        <div class="mb-4">
+            <span class="badge px-4 py-2 fs-6" style="background: var(--gradient-neon); color: black; font-family: 'JetBrains Mono', monospace; letter-spacing: 2px;">
+                NEURAL NETWORK ACTIVATED
+            </span>
+        </div>
+        <p class="lead mb-4 fs-3">Experience the next-generation Hunter x Hunter card collection</p>
+        <p class="mb-5 fs-5" style="font-family: 'JetBrains Mono', monospace; opacity: 0.8;">
+            [SYSTEM] Initialize digital card matrix • Deploy Nen-powered algorithms • Access legendary database
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-4">
+            <a href="@Url.Action("Index", "Cards")" class="btn btn-primary btn-lg">
+                <i class="fas fa-database me-2"></i>ACCESS CARD MATRIX
+            </a>
+            <a href="@Url.Action("Create", "Cards")" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-plus-circle me-2"></i>DEPLOY NEW CARD
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid my-5">
+    <div class="row card-grid">
+        <!-- Features Section -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 fade-in">
+                <div class="card-body text-center">
+                    <div class="mb-4" style="position: relative;">
+                        <i class="fas fa-user-ninja fa-4x" style="color: var(--neon-green); animation: neonPulse 3s infinite;"></i>
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="spinner-border" style="color: var(--neon-green); opacity: 0.3;" role="status"></div>
+                        </div>
+                    </div>
+                    <h4 class="card-title fw-bold mb-3" style="font-family: 'JetBrains Mono', monospace; color: var(--neon-green);">NEURAL HUNTERS</h4>
+                    <p class="card-text">Deploy digital avatars of legendary hunters: Gon, Killua, Kurapika, and elite Nen users in the cyber matrix.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 fade-in">
+                <div class="card-body text-center">
+                    <div class="mb-4" style="position: relative;">
+                        <i class="fas fa-bolt fa-4x" style="color: var(--neon-orange); animation: neonPulse 2.5s infinite;"></i>
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="spinner-grow" style="color: var(--neon-orange); opacity: 0.3;" role="status"></div>
+                        </div>
+                    </div>
+                    <h4 class="card-title fw-bold mb-3" style="font-family: 'JetBrains Mono', monospace; color: var(--neon-orange);">POWER ALGORITHMS</h4>
+                    <p class="card-text">Configure advanced Nen protocols, quantum power matrices, and cybernetic enhancement systems for ultimate combat efficiency.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 fade-in">
+                <div class="card-body text-center">
+                    <div class="mb-4" style="position: relative;">
+                        <i class="fas fa-microchip fa-4x" style="color: var(--neon-cyan); animation: neonPulse 2s infinite;"></i>
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                            <div class="spinner-border" style="color: var(--neon-cyan); opacity: 0.3;" role="status"></div>
+                        </div>
+                    </div>
+                    <h4 class="card-title fw-bold mb-3" style="font-family: 'JetBrains Mono', monospace; color: var(--neon-cyan);">RARITY MATRIX</h4>
+                    <p class="card-text">Classify digital assets through quantum rarity algorithms: Common → Legendary tier processing with neural network validation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Start Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="fas fa-rocket me-2" style="color: var(--accent-color);"></i>
+                        Quick Start Guide
+                    </h3>
+                </div>
+                <div class="card-body py-5">
+                    <div class="row g-4">
+                        <div class="col-md-3 text-center">
+                            <div class="position-relative mb-4">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto" 
+                                     style="width: 80px; height: 80px; background: var(--gradient-accent);">
+                                    <strong class="fs-2 text-white">1</strong>
+                                </div>
+                            </div>
+                            <h5 class="fw-bold mb-2">Sign Up</h5>
+                            <p class="small">Create your hunter account to get started</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="position-relative mb-4">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto" 
+                                     style="width: 80px; height: 80px; background: var(--success-color);">
+                                    <strong class="fs-2 text-white">2</strong>
+                                </div>
+                            </div>
+                            <h5 class="fw-bold mb-2">Create Cards</h5>
+                            <p class="small">Add your favorite Hunter x Hunter characters</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="position-relative mb-4">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto" 
+                                     style="width: 80px; height: 80px; background: var(--warning-color);">
+                                    <strong class="fs-2 text-white">3</strong>
+                                </div>
+                            </div>
+                            <h5 class="fw-bold mb-2">Set Abilities</h5>
+                            <p class="small">Define powers, rarities, and special traits</p>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <div class="position-relative mb-4">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto" 
+                                     style="width: 80px; height: 80px; background: var(--danger-color);">
+                                    <strong class="fs-2 text-white">4</strong>
+                                </div>
+                            </div>
+                            <h5 class="fw-bold mb-2">Build Collection</h5>
+                            <p class="small">Grow and manage your card library</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

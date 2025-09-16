@@ -1,0 +1,259 @@
+@model PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.Card
+
+@{
+    ViewData["Title"] = "Edit Card";
+}
+
+<!-- TODO: STUDENT TASK 1 - Page Header and Navigation
+     Instructions:
+     1. Create an attractive page header indicating this is an edit operation
+     2. Add breadcrumb navigation showing the path back to collection and card details
+     3. Use warning colors to indicate this is an edit operation
+     4. Include the card name in the header
+-->
+<div class="container-fluid bg-warning text-dark py-3 mb-4">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-2">
+                <li class="breadcrumb-item"><a href="#" asp-action="Index" class="text-dark">Card Collection</a></li>
+                <li class="breadcrumb-item"><a href="#" asp-action="Details" asp-route-id="@Model.Id" class="text-dark">@Model.Name</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            </ol>
+        </nav>
+        <h1 class="display-5">✏️ Edit Greed Island Card</h1>
+        <p class="lead">Modify your "@Model.Name" card details</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- TODO: STUDENT TASK 2 - Current Card Preview
+             Instructions:
+             1. Create a preview section showing the current card
+             2. Display key information in a card format
+             3. This helps users see what they're editing
+             4. Make it responsive and visually appealing
+        -->
+        <div class="col-md-4 mb-4">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h5><i class="fas fa-eye"></i> Current Card</h5>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.CharacterImageUrl))
+                    {
+                        <img src="@Model.CharacterImageUrl" alt="@Model.CharacterName" class="img-fluid rounded mb-3" style="max-height: 200px; width: 100%; object-fit: cover;">
+                    }
+                    <h6>@Model.Name</h6>
+                    <p class="small text-muted mb-1">Character: @Model.CharacterName</p>
+                    <p class="small text-muted mb-1">Rarity: @Model.Rarity</p>
+                    <p class="small text-muted mb-1">Power Level: @Model.PowerLevel/10</p>
+                    <span class="badge badge-@(GetRarityBadgeClass(Model.Rarity))">@Model.Rarity</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <!-- TODO: STUDENT TASK 3 - Edit Form Container
+                 Instructions:
+                 1. Create a form container similar to Create but for editing
+                 2. Pre-populate all fields with current values
+                 3. Include hidden field for ID
+                 4. Add validation and proper styling
+                 5. Use appropriate colors for edit operations
+            -->
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fas fa-edit"></i> Edit Card Information</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        
+                        <!-- Hidden field for ID -->
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="DateCreated" />
+                        <input type="hidden" asp-for="CreatedByUserId" />
+                        
+                        <!-- TODO: STUDENT TASK 4 - Basic Information Fields
+                             Instructions:
+                             1. Create the same form fields as Create view
+                             2. Ensure all current values are displayed
+                             3. Maintain consistent styling with Create view
+                             4. Add validation for all required fields
+                        -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Name" class="form-label">
+                                        <i class="fas fa-tag"></i> @Html.DisplayNameFor(model => model.Name)
+                                    </label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CharacterName" class="form-label">
+                                        <i class="fas fa-user"></i> @Html.DisplayNameFor(model => model.CharacterName)
+                                    </label>
+                                    <input asp-for="CharacterName" class="form-control" />
+                                    <span asp-validation-for="CharacterName" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TODO: STUDENT TASK 5 - Dropdown Fields
+                             Instructions:
+                             1. Create dropdown fields for Rarity and CardType
+                             2. Ensure current values are selected
+                             3. Style consistently with Create view
+                        -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Rarity" class="form-label">
+                                        <i class="fas fa-gem"></i> @Html.DisplayNameFor(model => model.Rarity)
+                                    </label>
+                                    @Html.DropDownListFor(model => model.Rarity, 
+                                        Html.GetEnumSelectList<PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity>(), 
+                                        new { @class = "form-select" })
+                                    <span asp-validation-for="Rarity" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CardType" class="form-label">
+                                        <i class="fas fa-layer-group"></i> @Html.DisplayNameFor(model => model.CardType)
+                                    </label>
+                                    @Html.DropDownListFor(model => model.CardType, 
+                                        Html.GetEnumSelectList<PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardType>(), 
+                                        new { @class = "form-select" })
+                                    <span asp-validation-for="CardType" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TODO: STUDENT TASK 6 - Numeric Fields
+                             Instructions:
+                             1. Add CardNumber and PowerLevel fields
+                             2. Include proper validation and constraints
+                             3. Display current values
+                        -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CardNumber" class="form-label">
+                                        <i class="fas fa-hashtag"></i> @Html.DisplayNameFor(model => model.CardNumber)
+                                    </label>
+                                    <input asp-for="CardNumber" type="number" class="form-control" min="1" max="999" />
+                                    <span asp-validation-for="CardNumber" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="PowerLevel" class="form-label">
+                                        <i class="fas fa-bolt"></i> @Html.DisplayNameFor(model => model.PowerLevel)
+                                    </label>
+                                    <input asp-for="PowerLevel" type="number" class="form-control" min="1" max="10" />
+                                    <span asp-validation-for="PowerLevel" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TODO: STUDENT TASK 7 - Text and URL Fields
+                             Instructions:
+                             1. Add fields for image URL, description, and special ability
+                             2. Use appropriate input types
+                             3. Pre-populate with current values
+                        -->
+                        <div class="form-group mb-3">
+                            <label asp-for="CharacterImageUrl" class="form-label">
+                                <i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.CharacterImageUrl)
+                            </label>
+                            <input asp-for="CharacterImageUrl" type="url" class="form-control" />
+                            <span asp-validation-for="CharacterImageUrl" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="form-label">
+                                <i class="fas fa-align-left"></i> @Html.DisplayNameFor(model => model.Description)
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="SpecialAbility" class="form-label">
+                                <i class="fas fa-magic"></i> @Html.DisplayNameFor(model => model.SpecialAbility)
+                            </label>
+                            <textarea asp-for="SpecialAbility" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="SpecialAbility" class="text-danger small"></span>
+                        </div>
+
+                        <!-- TODO: STUDENT TASK 8 - Action Buttons
+                             Instructions:
+                             1. Create Save Changes and Cancel buttons
+                             2. Use appropriate colors (warning for save, secondary for cancel)
+                             3. Add icons and proper spacing
+                             4. Include a link back to Details view
+                        -->
+                        <div class="form-group">
+                            <div class="btn-toolbar justify-content-between">
+                                <div class="btn-group">
+                                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </a>
+                                    <a asp-action="Index" class="btn btn-secondary">
+                                        <i class="fas fa-list"></i> Back to List
+                                    </a>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-warning btn-lg">
+                                        <i class="fas fa-save"></i> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TODO: STUDENT TASK 9 - Change Tracking Notice
+     Instructions:
+     1. Add a small notice about what happens when changes are saved
+     2. Include information about data validation
+     3. Style it as a helpful tip or information box
+-->
+<div class="container mt-4">
+    <div class="alert alert-info" role="alert">
+        <i class="fas fa-info-circle"></i>
+        <strong>Note:</strong> Changes will be saved immediately when you click "Save Changes". 
+        Make sure all information is correct before saving.
+    </div>
+</div>
+
+@functions {
+    // TODO: STUDENT TASK 10 - Helper Function
+    // Instructions: Implement the rarity badge helper function for consistent styling
+    public string GetRarityBadgeClass(PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity rarity)
+    {
+        return rarity switch
+        {
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.Common => "secondary",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.Uncommon => "primary",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.Rare => "info",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.SuperRare => "warning",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.UltraRare => "danger",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.Legendary => "dark",
+            _ => "light"
+        };
+    }
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

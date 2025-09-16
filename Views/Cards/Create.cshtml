@@ -1,0 +1,251 @@
+@model PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.Card
+
+@{
+    ViewData["Title"] = "Create New Card";
+}
+
+<!-- TODO: STUDENT TASK 1 - Page Header and Navigation
+     Instructions:
+     1. Create an attractive page header
+     2. Add breadcrumb navigation
+     3. Include a subtitle explaining what the user is doing
+     4. Style with Hunter x Hunter theme colors
+-->
+<div class="container-fluid bg-success text-white py-3 mb-4">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-2">
+                <li class="breadcrumb-item"><a href="#" asp-action="Index" class="text-light">Card Collection</a></li>
+                <li class="breadcrumb-item active text-light" aria-current="page">Create New Card</li>
+            </ol>
+        </nav>
+        <h1 class="display-5">🃏 Create New Greed Island Card</h1>
+        <p class="lead">Add a new Hunter x Hunter character card to your collection</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            
+            <!-- TODO: STUDENT TASK 2 - Form Card Container
+                 Instructions:
+                 1. Wrap the form in a Bootstrap card component
+                 2. Add appropriate padding and shadow for visual appeal
+                 3. Include a card header with form title
+                 4. Style the card to look professional
+            -->
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-plus-circle"></i> Card Information</h4>
+                </div>
+                <div class="card-body">
+                    
+                    <!-- TODO: STUDENT TASK 3 - Form Setup and Validation Summary
+                         Instructions:
+                         1. Set up the form with proper action and method
+                         2. Add validation summary with Bootstrap alert styling
+                         3. Include anti-forgery token
+                         4. Style validation messages appropriately
+                    -->
+                    <form asp-action="Create" method="post" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        
+                        <!-- TODO: STUDENT TASK 4 - Basic Card Information Fields
+                             Instructions:
+                             1. Create form groups for Name and Character Name
+                             2. Use Bootstrap form-group and form-control classes
+                             3. Add proper labels and validation messages
+                             4. Include helpful placeholder text
+                             5. Add icons to make fields more intuitive
+                        -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Name" class="form-label">
+                                        <i class="fas fa-tag"></i> @Html.DisplayNameFor(model => model.Name)
+                                    </label>
+                                    <input asp-for="Name" class="form-control" placeholder="Enter card name (e.g., Gon's Jajanken)" />
+                                    <span asp-validation-for="Name" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CharacterName" class="form-label">
+                                        <i class="fas fa-user"></i> @Html.DisplayNameFor(model => model.CharacterName)
+                                    </label>
+                                    <input asp-for="CharacterName" class="form-control" placeholder="Enter character name (e.g., Gon Freecss)" />
+                                    <span asp-validation-for="CharacterName" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TODO: STUDENT TASK 5 - Dropdown Fields for Enums
+                             Instructions:
+                             1. Create dropdowns for Rarity and CardType using Html.DropDownListFor
+                             2. Style dropdowns with Bootstrap form-select class
+                             3. Add appropriate default options
+                             4. Include validation messages
+                             5. Add descriptive labels with icons
+                        -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Rarity" class="form-label">
+                                        <i class="fas fa-gem"></i> @Html.DisplayNameFor(model => model.Rarity)
+                                    </label>
+                                    @Html.DropDownListFor(model => model.Rarity, 
+                                        Html.GetEnumSelectList<PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity>(), 
+                                        "Select Rarity", 
+                                        new { @class = "form-select" })
+                                    <span asp-validation-for="Rarity" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CardType" class="form-label">
+                                        <i class="fas fa-layer-group"></i> @Html.DisplayNameFor(model => model.CardType)
+                                    </label>
+                                    @Html.DropDownListFor(model => model.CardType, 
+                                        Html.GetEnumSelectList<PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardType>(), 
+                                        "Select Card Type", 
+                                        new { @class = "form-select" })
+                                    <span asp-validation-for="CardType" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TODO: STUDENT TASK 6 - Numeric Fields
+                             Instructions:
+                             1. Create form fields for CardNumber and PowerLevel
+                             2. Use appropriate input types (number)
+                             3. Add min/max validation attributes
+                             4. Style with Bootstrap classes
+                             5. Add helpful hints about valid ranges
+                        -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CardNumber" class="form-label">
+                                        <i class="fas fa-hashtag"></i> @Html.DisplayNameFor(model => model.CardNumber)
+                                    </label>
+                                    <input asp-for="CardNumber" type="number" class="form-control" min="1" max="999" placeholder="Enter card number" />
+                                    <span asp-validation-for="CardNumber" class="text-danger small"></span>
+                                    <small class="form-text text-muted">Card numbers should be between 1-999</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="PowerLevel" class="form-label">
+                                        <i class="fas fa-bolt"></i> @Html.DisplayNameFor(model => model.PowerLevel)
+                                    </label>
+                                    <input asp-for="PowerLevel" type="number" class="form-control" min="1" max="10" placeholder="1-10" />
+                                    <span asp-validation-for="PowerLevel" class="text-danger small"></span>
+                                    <small class="form-text text-muted">Power level from 1 (weakest) to 10 (strongest)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TODO: STUDENT TASK 7 - Text Fields for Description and Special Ability
+                             Instructions:
+                             1. Create form fields for CharacterImageUrl, Description, and SpecialAbility
+                             2. Use appropriate input types (url for image, textarea for long text)
+                             3. Add placeholder text with examples
+                             4. Style consistently with other form elements
+                             5. Make Description and SpecialAbility use textarea elements
+                        -->
+                        <div class="form-group mb-3">
+                            <label asp-for="CharacterImageUrl" class="form-label">
+                                <i class="fas fa-image"></i> @Html.DisplayNameFor(model => model.CharacterImageUrl)
+                            </label>
+                            <input asp-for="CharacterImageUrl" type="url" class="form-control" placeholder="https://example.com/character-image.jpg" />
+                            <span asp-validation-for="CharacterImageUrl" class="text-danger small"></span>
+                            <small class="form-text text-muted">Optional: URL to character image</small>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="form-label">
+                                <i class="fas fa-align-left"></i> @Html.DisplayNameFor(model => model.Description)
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe the card and its background..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="SpecialAbility" class="form-label">
+                                <i class="fas fa-magic"></i> @Html.DisplayNameFor(model => model.SpecialAbility)
+                            </label>
+                            <textarea asp-for="SpecialAbility" class="form-control" rows="2" placeholder="Describe the card's special ability or power..."></textarea>
+                            <span asp-validation-for="SpecialAbility" class="text-danger small"></span>
+                        </div>
+
+                        <!-- TODO: STUDENT TASK 8 - Form Action Buttons
+                             Instructions:
+                             1. Create a button group with Submit and Cancel buttons
+                             2. Style the Submit button as primary/success
+                             3. Style the Cancel button as secondary
+                             4. Add appropriate icons
+                             5. Make buttons responsive and well-spaced
+                             6. Add confirmation behavior if needed
+                        -->
+                        <div class="form-group">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a asp-action="Index" class="btn btn-secondary me-md-2">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="fas fa-save"></i> Create Card
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TODO: STUDENT TASK 9 - Help Panel (Optional)
+             Instructions:
+             1. Create a side panel with helpful tips for creating cards
+             2. Include examples of good card names and descriptions
+             3. Add information about Hunter x Hunter characters
+             4. Style it as a secondary card or aside element
+             5. Make it responsive so it doesn't interfere on mobile
+        -->
+        <div class="col-md-4 d-none d-md-block">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h5><i class="fas fa-lightbulb"></i> Card Creation Tips</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Popular Characters:</h6>
+                    <ul class="small">
+                        <li>Gon Freecss</li>
+                        <li>Killua Zoldyck</li>
+                        <li>Kurapika</li>
+                        <li>Leorio Paradinight</li>
+                        <li>Hisoka Morow</li>
+                        <li>Chrollo Lucilfer</li>
+                    </ul>
+                    
+                    <h6>Card Type Examples:</h6>
+                    <ul class="small">
+                        <li><strong>Attack:</strong> Physical abilities</li>
+                        <li><strong>Magic:</strong> Nen abilities</li>
+                        <li><strong>Defense:</strong> Protective skills</li>
+                        <li><strong>Item:</strong> Tools and weapons</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TODO: STUDENT TASK 10 - Client-side Validation Scripts
+     Instructions:
+     1. Include the validation scripts section at the bottom
+     2. This enables client-side validation for better user experience
+     3. Make sure it's properly formatted
+-->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

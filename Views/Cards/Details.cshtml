@@ -1,0 +1,206 @@
+@model PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.Card
+
+@{
+    ViewData["Title"] = "Card Details";
+}
+
+<!-- TODO: STUDENT TASK 1 - Breadcrumb Navigation
+     Instructions:
+     1. Add breadcrumb navigation using Bootstrap breadcrumb component
+     2. Include links back to the Cards index
+     3. Show current card name in the breadcrumb
+     4. Style appropriately with proper spacing
+-->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="Index">Card Collection</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.Name)</li>
+    </ol>
+</nav>
+
+<!-- TODO: STUDENT TASK 2 - Hero Section with Card Image
+     Instructions:
+     1. Create a hero section that prominently displays the card
+     2. If image is available, display it large and styled like a real card
+     3. If no image, create an attractive placeholder
+     4. Use Bootstrap's grid system for responsive layout
+     5. Add card-like styling with shadows, borders, etc.
+-->
+<div class="row mb-5">
+    <div class="col-md-6">
+        <div class="card-image-container">
+            @if (!string.IsNullOrEmpty(Model.CharacterImageUrl))
+            {
+                <img src="@Html.DisplayFor(model => model.CharacterImageUrl)" 
+                     alt="@Html.DisplayFor(model => model.CharacterName)" 
+                     class="img-fluid rounded shadow-lg"
+                     style="width: 100%; max-width: 400px; height: auto;">
+            }
+            else
+            {
+                <div class="placeholder-card bg-gradient-success text-white d-flex align-items-center justify-content-center rounded shadow-lg" 
+                     style="width: 100%; max-width: 400px; height: 500px;">
+                    <div class="text-center">
+                        <i class="fas fa-image fa-4x mb-3"></i>
+                        <h4>@Html.DisplayFor(model => model.CharacterName)</h4>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    
+    <!-- TODO: STUDENT TASK 3 - Card Information Panel
+         Instructions:
+         1. Create a detailed information panel for the card
+         2. Display all card properties in an organized manner
+         3. Use Bootstrap's list group or card components
+         4. Add appropriate icons and styling for each field
+         5. Make rarity and card type stand out with badges or special styling
+    -->
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h2 class="mb-0">@Html.DisplayFor(model => model.Name)</h2>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Character:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CharacterName)</dd>
+                    
+                    <dt class="col-sm-4">Rarity:</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge badge-@(GetRarityBadgeClass(Model.Rarity)) badge-lg">
+                            @Html.DisplayFor(model => model.Rarity)
+                        </span>
+                    </dd>
+                    
+                    <dt class="col-sm-4">Card Type:</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge badge-primary">@Html.DisplayFor(model => model.CardType)</span>
+                    </dd>
+                    
+                    <dt class="col-sm-4">Card Number:</dt>
+                    <dd class="col-sm-8">#@Html.DisplayFor(model => model.CardNumber)</dd>
+                    
+                    <dt class="col-sm-4">Power Level:</dt>
+                    <dd class="col-sm-8">
+                        <div class="d-flex align-items-center">
+                            <strong class="me-2">@Html.DisplayFor(model => model.PowerLevel)/10</strong>
+                            <div class="progress" style="width: 100px;">
+                                <div class="progress-bar bg-warning" role="progressbar" 
+                                     style="width: @(Model.PowerLevel * 10)%" 
+                                     aria-valuenow="@Model.PowerLevel" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="10">
+                                </div>
+                            </div>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TODO: STUDENT TASK 4 - Description and Special Ability Section
+     Instructions:
+     1. Create sections for description and special ability
+     2. Use cards or wells to contain the content
+     3. Add appropriate icons and styling
+     4. Handle cases where description or special ability might be empty
+     5. Make the text readable and well-formatted
+-->
+@if (!string.IsNullOrEmpty(Model.Description) || !string.IsNullOrEmpty(Model.SpecialAbility))
+{
+    <div class="row mb-4">
+        @if (!string.IsNullOrEmpty(Model.Description))
+        {
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-info-circle"></i> Description</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@Html.DisplayFor(model => model.Description)</p>
+                    </div>
+                </div>
+            </div>
+        }
+        
+        @if (!string.IsNullOrEmpty(Model.SpecialAbility))
+        {
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h5 class="mb-0"><i class="fas fa-star"></i> Special Ability</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text font-weight-bold">@Html.DisplayFor(model => model.SpecialAbility)</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<!-- TODO: STUDENT TASK 5 - Action Buttons Section
+     Instructions:
+     1. Create a section with action buttons (Edit, Delete, Back to List)
+     2. Style buttons with appropriate Bootstrap classes and colors
+     3. Add confirmation for destructive actions
+     4. Make sure buttons are evenly spaced and responsive
+     5. Add icons to make buttons more intuitive
+-->
+<div class="row">
+    <div class="col-12">
+        <div class="btn-toolbar justify-content-between" role="toolbar">
+            <div class="btn-group" role="group">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger" 
+                   onclick="return confirm('Are you sure you want to delete this card?')">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
+            </div>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Collection
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- TODO: STUDENT TASK 6 - Metadata Section
+     Instructions:
+     1. Add a small section showing when the card was created
+     2. Style it as a subtle footer or note
+     3. Format the date nicely
+     4. Consider adding who created the card if that information is available
+-->
+<hr class="my-4">
+<div class="row">
+    <div class="col-12">
+        <small class="text-muted">
+            <i class="fas fa-calendar-alt"></i> 
+            Created on @Model.DateCreated.ToString("MMMM dd, yyyy")
+        </small>
+    </div>
+</div>
+
+@functions {
+    // TODO: STUDENT TASK 7 - Rarity Badge Helper
+    // Instructions: Complete this helper function to provide consistent rarity styling
+    public string GetRarityBadgeClass(PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity rarity)
+    {
+        return rarity switch
+        {
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.Common => "secondary",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.Uncommon => "primary",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.Rare => "info",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.SuperRare => "warning",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.UltraRare => "danger",
+            PF_LAB3_BSIT31A1_JohnAndrei_Guillena.Models.CardRarity.Legendary => "dark",
+            _ => "light"
+        };
+    }
+}
